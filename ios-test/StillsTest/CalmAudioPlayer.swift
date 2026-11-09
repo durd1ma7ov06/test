@@ -72,3 +72,4 @@ final class CalmAudioPlayer: ObservableObject {
         try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
     }
 }
+

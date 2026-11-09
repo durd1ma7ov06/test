@@ -15,3 +15,4 @@ xcodegen generate
 
 echo "✅ Loyiha muvaffaqiyatli yaratildi! Xcode ochilmoqda..."
 open StillsTest.xcodeproj
+

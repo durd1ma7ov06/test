@@ -63,3 +63,4 @@ targets:
       path: StillsShieldAction/StillsShieldAction.entitlements
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: com.stills.app.StillsShieldAction
+
