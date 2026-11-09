@@ -2,35 +2,51 @@ import ManagedSettings
 import ManagedSettingsUI
 import UIKit
 
-// Keep the class name Xcode generated.
+/// ShieldConfigurationExtension
+/// Bloklangan ilova ochilganda iOS tomonidan ko'rsatiladigan ekranni chizuvchi komponent.
 class ShieldConfigurationExtension: ShieldConfigurationDataSource {
 
-    private func listenShield() -> ShieldConfiguration {
-        ShieldConfiguration(
+    private func createShieldConfiguration() -> ShieldConfiguration {
+        // Yuqori kontrastli, zamonaviy qora shaffof (Ultra Thin Dark Material) uslubi
+        let iconImage = UIImage(systemName: "headphones")?.withTintColor(.white, renderingMode: .alwaysOriginal)
+
+        return ShieldConfiguration(
             backgroundBlurStyle: .systemUltraThinMaterialDark,
-            backgroundColor: UIColor.black.withAlphaComponent(0.85),
-            icon: UIImage(systemName: "headphones")?.withTintColor(.white, renderingMode: .alwaysOriginal),
-            title: ShieldConfiguration.Label(text: "Time's up", color: .white),
-            subtitle: ShieldConfiguration.Label(text: "Listen to something calm to earn minutes back.", color: .lightGray),
-            primaryButtonLabel: ShieldConfiguration.Label(text: "Listen", color: .black),
+            backgroundColor: UIColor.black.withAlphaComponent(0.88),
+            icon: iconImage,
+            title: ShieldConfiguration.Label(
+                text: "Vaqt tugadi ⏳",
+                color: .white
+            ),
+            subtitle: ShieldConfiguration.Label(
+                text: "Diqqatingizni jamlash vaqti keldi. Qayta vaqt olish uchun qisqa audio eshiting.",
+                color: UIColor(white: 0.85, alpha: 1.0)
+            ),
+            primaryButtonLabel: ShieldConfiguration.Label(
+                text: "Eshitish (Listen) 🎧",
+                color: .black
+            ),
             primaryButtonBackgroundColor: .white,
-            secondaryButtonLabel: ShieldConfiguration.Label(text: "Close", color: .white)
+            secondaryButtonLabel: ShieldConfiguration.Label(
+                text: "Yopish (Close)",
+                color: UIColor(white: 0.7, alpha: 1.0)
+            )
         )
     }
 
     override func configuration(shielding application: Application) -> ShieldConfiguration {
-        listenShield()
+        createShieldConfiguration()
     }
 
     override func configuration(shielding application: Application, in category: ActivityCategory) -> ShieldConfiguration {
-        listenShield()
+        createShieldConfiguration()
     }
 
     override func configuration(shielding webDomain: WebDomain) -> ShieldConfiguration {
-        listenShield()
+        createShieldConfiguration()
     }
 
     override func configuration(shielding webDomain: WebDomain, in category: ActivityCategory) -> ShieldConfiguration {
-        listenShield()
+        createShieldConfiguration()
     }
 }

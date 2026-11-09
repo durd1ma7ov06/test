@@ -12,39 +12,45 @@ struct StillsTestApp: App {
     }
 }
 
-/// Tells the UI to open the Listen screen when the notification is tapped.
+/// Ilova navigatsiyasini boshqaruvchi markaziy router
 @MainActor
 final class Router: ObservableObject {
     static let shared = Router()
-    @Published var showListen = false
+    @Published var showListen: Bool = false
 }
 
+/// Bildirishnomalarni boshqaruvchi delegat
 final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-        // Must be set before launch finishes, or taps that cold-start the app are missed.
+        // Ilova ishga tushishi bilan delegatni tayinlash shart (cold-start o'tkazib yuborilmasligi uchun)
         UNUserNotificationCenter.current().delegate = self
         return true
     }
 
-    // Called when the user taps our notification (cold-start or background)
+    // Foydalanuvchi bildirishnomani bosganda (Ilova yopiq bo'lsa ham yoki orqa fonda bo'lsa ham)
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
         let route = response.notification.request.content.userInfo["route"] as? String
-        if route == "listen" { // must match StillsShieldAction
-            DispatchQueue.main.async {
+
+        if route == "listen" {
+            Task { @MainActor in
                 Router.shared.showListen = true
             }
         }
         completionHandler()
     }
 
-    // Show banner even when the app is already in the foreground
+    // Ilova ochiq (foreground) turgan vaqtda bildirishnoma kelsa ham bannerni ko'rsatish
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler([.banner, .sound])
+        if #available(iOS 14.0, *) {
+            completionHandler([.banner, .sound, .badge])
+        } else {
+            completionHandler([.alert, .sound])
+        }
     }
 }
